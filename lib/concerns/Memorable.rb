@@ -2,11 +2,11 @@ module Memorable
   module ClassMethods
 
     def create(name)
-      new(name).tap {|x| x.save}
+      new(name).tap(&:save)
     end
 
     def destroy_all
-      self.all.clear
+      all.clear
     end
   end
   module InstanceMethods
