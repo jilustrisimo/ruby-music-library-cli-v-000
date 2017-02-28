@@ -1,5 +1,3 @@
-require 'pry'
-
 class Song
   include Memorable::InstanceMethods
   extend Memorable::ClassMethods
@@ -10,13 +8,13 @@ class Song
 
   def initialize(name, artist = nil, genre = nil)
     @name = name
-    self.artist = artist if artist != nil
-    self.genre = genre if genre != nil
+    self.artist = artist unless artist.nil?
+    self.genre = genre unless genre.nil?
   end
 
   def artist=(artist)
     @artist = artist
-    artist.add_song(self) #unless artist.songs.include?(self)
+    artist.add_song(self)
   end
 
   def genre=(genre)
@@ -29,31 +27,31 @@ class Song
   end
 
   def self.create(name, artist = nil, genre = nil)
-    new(name, artist, genre).tap {|x| x.save}
+    new(name, artist, genre).tap(&:save)
   end
 
   def self.find_by_name(name)
-    self.all.detect {|song| song.name == name}
+    all.detect { |song| song.name == name }
   end
 
   def self.find_or_create_by_name(name)
-    self.find_by_name(name) ? self.find_by_name(name) : self.create(name)
+    find_by_name(name) ? find_by_name(name) : create(name)
   end
 
   def self.new_from_filename(filename)
-    artist, song, genre = filename.split(" - ")
-    genre.gsub!(".mp3","")
+    artist, song, genre = filename.split(' - ')
+    genre.gsub!('.mp3', '')
     artist = Artist.find_or_create_by_name(artist)
     genre = Genre.find_or_create_by_name(genre)
-    self.new(song, artist, genre)
+    new(song, artist, genre)
   end
 
   def self.create_from_filename(filename)
-    artist, song, genre = filename.split(" - ")
-    genre.gsub!(".mp3","")
+    artist, song, genre = filename.split(' - ')
+    genre.gsub!('.mp3', '')
     artist = Artist.find_or_create_by_name(artist)
     genre = Genre.find_or_create_by_name(genre)
-    self.create(song, artist, genre)
+    create(song, artist, genre)
   end
 
   def self.list_song(song)

@@ -1,5 +1,3 @@
-require 'pry'
-
 class Artist
   include Memorable::InstanceMethods
   extend Memorable::ClassMethods
@@ -23,7 +21,7 @@ class Artist
   end
 
   def genres
-    @songs.map {|song| song.genre}.uniq
+    @songs.map(&:genre).uniq
   end
 
 end
