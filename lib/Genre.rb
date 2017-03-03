@@ -15,11 +15,7 @@ class Genre
     @@all
   end
 
-  def save
-    @@all << self
-  end
-
   def artists
-    @songs.map(&:artist).uniq
+    @songs.each(&:artist)
   end
 end

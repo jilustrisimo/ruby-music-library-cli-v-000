@@ -10,18 +10,6 @@ class MusicLibraryController
       while input != 'exit'
         input = gets.strip
         case input
-        when 'list songs'
-          songs
-        when 'list artists'
-          artists
-        when 'list genres'
-          genres
-        when 'play song'
-          play_song
-        when 'list artist'
-          songs_by_artist
-        when 'list genre'
-          songs_by_genre
         when 'exit'
           puts 'I pity the fool!'
           sleep 3
@@ -31,7 +19,7 @@ class MusicLibraryController
   end
 
   def songs
-    Song.all.each.with_index(1) do |s, i|
+    Song.all.each_with_index do |s, i|
       puts "#{i}. #{Song.list_song(s)}"
     end
   end
@@ -46,9 +34,8 @@ class MusicLibraryController
 
   def play_song
     puts 'Which number fool?'
-    input = gets.strip.to_i - 1
-    s = Song.all[input]
-    puts "Playing #{Song.list_song(s)}"
+    input = gets.strip.to_i
+    puts "Playing #{Song.list_song(input)}"
   end
 
   def songs_by_artist
@@ -56,7 +43,7 @@ class MusicLibraryController
     input = gets.strip
     if artist = Artist.find_by_name(input)
       artist.songs.each do |s|
-        puts "#{Song.list_song(s)}"
+        puts Song.list_song(s).to_s
       end
     end
   end
@@ -66,7 +53,7 @@ class MusicLibraryController
     input = gets.strip
     if genre = Genre.find_by_name(input)
       genre.songs.each do |s|
-        puts "#{Song.list_song(s)}"
+        puts Song.list_song(s).to_s
       end
     end
   end
